@@ -23,7 +23,7 @@ My goal was to implement the application with as much complexity as was needed t
 
 The main libraries I have chosen are:
 
-- Monix for it's Observable, which provides a push based data stream with API for mapping and filtering.
+- Monix for its Observable, which provides a push based data stream with API for mapping and filtering.
 - HTTP4S for the HTTP server.
 - Circe for decoding and encoding JSON.
 
