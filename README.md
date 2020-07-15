@@ -13,6 +13,12 @@ This application performs windowed word count on data from its input stream.
 
 ## Design and development notes
 
+I have taken the following assumptions about the requirements:
+
+- The `data` field in the input always contains only one word.
+- The response to the HTTP request should be in JSON.
+- The volume of incoming data will not be much bigger than what is in the blackbox example. The application should work well with more workload, but with enough volume eventually the in-memory storage will fill up.
+
 My goal was to implement the application with as much complexity as was needed to support the requirements, but not much more. I haven't used any data processing frameworks, like Flink or Beam, as they seem like an overkill for this particular job.
 
 The main libraries I have chosen are:
@@ -25,7 +31,7 @@ The basic structure of the application is as follows:
 
 - Lines from the input stream are fed into an Observable.
 - Each line is decoded into a case class.
-- For each line the window is decided by rounding the date/time down to the start of the minute.
+- For each line the window is decided by rounding the date/time down to the start of the minute. This approach will also work for out of order events, even though the example blackbox application always seems to send events in order.
 - Lines are then stored in a map, keyed with a tuple of window, event type and word. The value in the map is the word count.
 
 An HTTP server is started together with the Observable, and on request reads the current data from the map.
